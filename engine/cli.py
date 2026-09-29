@@ -2,6 +2,7 @@ import argparse
 import json
 from pathlib import Path
 from .pipeline import build_playbook
+from .render import write_html
 
 def main():
     p = argparse.ArgumentParser()
