@@ -15,6 +15,7 @@ def main():
     out = Path(args.output)
     out.mkdir(parents=True, exist_ok=True)
     (out / "master-playbook.md").write_text(result["markdown"], encoding="utf-8")
+    write_html(result["markdown"], out / "master-playbook.html")
     (out / "provenance.json").write_text(json.dumps(result["provenance"], indent=2), encoding="utf-8")
     (out / "change-report.md").write_text(result["change_report"], encoding="utf-8")
 
