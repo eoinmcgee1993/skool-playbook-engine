@@ -1,0 +1,29 @@
+name: Build playbook
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [source-bundle-updated]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Locate source bundle
+        run: |
+          test -f input/bundle.json || {
+            echo "No input/bundle.json present. Supply the authorised bundle as a workflow artifact or commit it to input/bundle.json."
+            exit 1
+          }
+      - run: python -m engine.cli --input input/bundle.json --output dist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: skool-master-playbook
+          path: dist/
